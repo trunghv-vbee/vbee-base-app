@@ -44,6 +44,13 @@ target 'vbee' do
     # Pods for testing
   end
 
+  ENVFILES = {
+    'Debug' => '$(PODS_ROOT)/../../.env.development',
+    'development' => '$(PODS_ROOT)/../../.env.development',
+    'staging' => '$(PODS_ROOT)/../../.env.staging',
+    'production' => '$(PODS_ROOT)/../../.env.production',
+  }
+
   post_install do |installer|
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
@@ -51,5 +58,12 @@ target 'vbee' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        if target.name == 'react-native-config'
+          config.build_settings['ENVFILE'] = ENVFILES[config.name]
+        end
+      end
+    end
   end
 end

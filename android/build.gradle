@@ -17,5 +17,18 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
 }
+allprojects {
+    // append here
+    afterEvaluate {
+        if (getPlugins().hasPlugin('android') || getPlugins().hasPlugin('android-library')) {
+            configure(android.lintOptions) {
+                abortOnError false
+                checkReleaseBuilds false
+            }
+        }
+    }
+}
 
 apply plugin: "com.facebook.react.rootproject"
+
+

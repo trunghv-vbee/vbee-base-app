@@ -1,7 +1,15 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
-
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+project.ext.envConfigFiles = [
+        production: ".env.production",
+        debug: ".env.development",
+        development: ".env.development",
+        staging: ".env.staging",
+]
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -74,13 +82,16 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.vbee"
+    namespace "vn.vbee.base"
     defaultConfig {
-        applicationId "com.vbee"
+        applicationId "vn.vbee.base"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+        resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
+        resValue "string", "build_config_package", "vn.vbee.base"
     }
     signingConfigs {
         debug {
@@ -89,17 +100,47 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('UPLOAD_STORE_FILE')) {
+                storeFile file(UPLOAD_STORE_FILE)
+                storePassword UPLOAD_STORE_PASSWORD
+                keyAlias UPLOAD_KEY_ALIAS
+                keyPassword UPLOAD_KEY_PASSWORD
+            }
+        }
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release'] // Addded this
+            resValue "string", "CodePushDeploymentKey", '"AR90piB3-v6PFMlACIr3cL6SPS0GMGNzAjoD7"'
         }
-        release {
+        development {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
+            matchingFallbacks = ['release'] // Addded this
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            resValue "string", "CodePushDeploymentKey", '"AR90piB3-v6PFMlACIr3cL6SPS0GMGNzAjoD7"'
+        }
+        staging {
+            // Caution! In production, you need to generate your own keystore file.
+            // see https://reactnative.dev/docs/signed-apk-android.
+            signingConfig signingConfigs.release
+            minifyEnabled enableProguardInReleaseBuilds
+            matchingFallbacks = ['release'] // Addded this
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            resValue "string", "CodePushDeploymentKey", '"tglfHo9ohwSsaF_VQHhRtzoiC7HX-3d3zB9jk"'
+        }
+        production {
+            // Caution! In production, you need to generate your own keystore file.
+            // see https://reactnative.dev/docs/signed-apk-android.
+            signingConfig signingConfigs.release
+            minifyEnabled enableProguardInReleaseBuilds
+            matchingFallbacks = ['release'] // Addded this
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            resValue "string", "CodePushDeploymentKey", '"PRHSnl9jkKRmy_vxfNfv5CS8t4q7iq7t5fndw"'
         }
     }
 }
@@ -108,6 +149,7 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
