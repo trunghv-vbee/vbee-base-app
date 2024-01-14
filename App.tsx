@@ -3,116 +3,58 @@
  * https://github.com/facebook/react-native
  *
  * @format
+ * @flow strict-local
  */
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {LocalizationProvider} from 'assets/languages/Translations';
+import LoadingComponent from 'components/Loading/LoadingComponent';
+import {persistor, store} from 'middleware/stores';
+import RootApp from 'navigation/RootApp';
+import * as React from 'react';
+import FlashMessage from 'react-native-flash-message';
+import 'react-native-gesture-handler';
+import {MenuProvider} from 'react-native-popup-menu';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import 'utils/string-utils';
+import RootView from './src/RootView';
+import CodePush from 'react-native-code-push';
+import LoadingManager from 'components/Loading/LoadingManager';
+import {StyleSheet} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const App = () => {
+  const loadingRef: any = React.useRef();
+  React.useEffect(() => {
+    loadingRef && LoadingManager.register(loadingRef);
+    return () => {
+      LoadingManager.unregister(loadingRef);
+    };
+  }, []);
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <LocalizationProvider>
+          <RootView>
+            <MenuProvider>
+              <RootApp />
+              <FlashMessage style={styles.flashMessage} />
+            </MenuProvider>
+            <LoadingComponent ref={loadingRef} />
+          </RootView>
+        </LocalizationProvider>
+      </PersistGate>
+    </Provider>
   );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  flashMessage: {paddingTop: 20},
 });
-
-export default App;
+let codePushOptions = {
+  checkFrequency: CodePush.CheckFrequency.MANUAL,
+  //   checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+  updateDialog: false,
+  installMode: CodePush.InstallMode.IMMEDIATE,
+  mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
+};
+export default CodePush(codePushOptions)(App);
