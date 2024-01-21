@@ -13,6 +13,7 @@ import {
 import colors from 'assets/colors';
 import {height, width} from 'assets/sizes';
 import images from 'assets/images';
+import Footer from 'components/Layout/Footer';
 
 interface Props extends HeaderBaseProps {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ interface Props extends HeaderBaseProps {
   style?: StyleProp<ViewStyle>;
   translucent?: boolean;
   dark?: boolean;
+  isHideFooter?: boolean;
   title?: string;
   [key: string]: any;
 }
@@ -30,6 +32,7 @@ const Container = ({
   translucent = true,
   dark,
   title,
+  isHideFooter,
   ...props
 }: Props) => {
   const ContainerComponent = translucent ? View : SafeAreaView;
@@ -45,6 +48,7 @@ const Container = ({
         style={[styles.flex, translucent ? {} : styles.styleTranslucent]}>
         <View style={[styles.flex, style]}>{children}</View>
       </ContainerComponent>
+      {!isHideFooter && <Footer />}
     </ImageBackground>
   );
 };

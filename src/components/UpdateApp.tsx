@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import CodePush, {DownloadProgress} from 'react-native-code-push';
 import Modal from 'react-native-modal';
-
+import Constant from 'assets/constant';
 import * as Progress from 'react-native-progress';
 import codepushUtils from 'utils/codepush-utils';
 import colors from 'assets/colors';
@@ -186,7 +186,7 @@ class UpdateApp extends Component<IProps, IState> {
           </Text>
           {progressView}
           <Text style={styles.messages}>{this.state.syncMessage || ''}</Text>
-          <Text>Current Version: {VERSION}</Text>
+          <Text>Current Version: {Constant.versionName}</Text>
           <View style={styles.containerButtonUpdate}>
             <TouchableOpacity
               onPress={this.syncImmediate.bind(this)}

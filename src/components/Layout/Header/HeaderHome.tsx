@@ -26,6 +26,7 @@ const HeaderHome = (props: HeaderHomeProps) => {
             backgroundColor={colors.transparent}
             onPress={onPressLeft}
             icon={images.ic_menu}
+            iconStyle={{height: 20, width: 20}}
           />
         </View>
         <View>
