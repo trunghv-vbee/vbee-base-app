@@ -10,42 +10,44 @@ import stylesCommon from 'assets/stylesCommon';
 
 interface Props {
   onChange: (month: number) => void;
-  month: string;
+  year: string;
 }
 
-const MonthList = (props: Props) => {
+const YearList = (props: Props) => {
   const _onSelectedMonth = (month: number) => () => {
     props.onChange && props.onChange(month);
   };
   return (
     <View style={styles.container}>
-      {moment.monthsShort().map((value, i) => {
-        const isSelected = parseInt(props.month) == i + 1;
-        return (
-          <TouchableOpacity
-            key={i.toString()}
-            onPress={_onSelectedMonth(i)}
-            style={[styles.containerText]}>
-            <View
-              style={[
-                stylesCommon.center,
-                stylesCommon.flex1,
-                isSelected ? styles.containerSelected : {},
-              ]}>
-              <TextBase
-                fontWeight={isSelected ? '600' : '400'}
-                color={isSelected ? colors.primary : colors.text}>
-                {value}
-              </TextBase>
-            </View>
-          </TouchableOpacity>
-        );
-      })}
+      {Array.from({length: 12}, (_, i) => parseInt(props.year) + i).map(
+        (value, i) => {
+          const isSelected = parseInt(props.year) == value;
+          return (
+            <TouchableOpacity
+              key={i.toString()}
+              onPress={_onSelectedMonth(value)}
+              style={[styles.containerText]}>
+              <View
+                style={[
+                  stylesCommon.center,
+                  stylesCommon.flex1,
+                  isSelected ? styles.containerSelected : {},
+                ]}>
+                <TextBase
+                  fontWeight={isSelected ? '600' : '400'}
+                  color={isSelected ? colors.primary : colors.text}>
+                  {value}
+                </TextBase>
+              </View>
+            </TouchableOpacity>
+          );
+        },
+      )}
     </View>
   );
 };
 
-export default React.memo(MonthList);
+export default React.memo(YearList);
 
 const styles = StyleSheet.create({
   textLabelMonth: {
