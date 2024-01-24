@@ -6,5 +6,6 @@ export default {
   useService: 'Sử dụng dịch vụ',
   introduce: 'Giới thiệu',
   guide: 'Hướng dẫn',
+  userManual: 'Hướng dẫn sử dụng',
   tempsAndPolicies: 'Điều khoản & Chính sách',
 };

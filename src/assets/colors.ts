@@ -3,6 +3,7 @@ const colors = {
   secondary: '#F3F3F3',
   text: '#1C1C1E',
   label: '#EBEBF599',
+  gray04: 'rgba(60, 60, 69, 0.04)',
   gray08: 'rgba(245, 245, 247, 0.08)',
   gray16: 'rgba(60, 60, 69, 0.16)',
   gray32: 'rgba(255, 255, 255, 0.32)',
@@ -25,6 +26,7 @@ const colors = {
   orange: '#E5C470',
   boxShadow: 'rgba(0, 64, 128, 0.04)',
   gray: '#3C3C4329',
+  gray43: '#3C3C43A3',
   transparent: 'transparent',
 };
 

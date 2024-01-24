@@ -7,6 +7,7 @@ const images = {
   background: require('images/background.png'),
   ic_add: require('images/ic_add.png'),
   ic_back: require('images/ic_back.png'),
+  ic_bg: require('images/ic_bg.png'),
   ic_book: require('images/ic_book.png'),
   ic_checked: require('images/ic_checked.png'),
   ic_close: require('images/ic_close.png'),
