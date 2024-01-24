@@ -17,7 +17,7 @@ const HeaderHome = (props: HeaderHomeProps) => {
   const router = useNavigation<DrawerNavigationProp<MainParamList>>();
 
   const onPressLeft = () =>
-    props?.onPressLeft ? props?.onPressLeft() : router.toggleDrawer();
+    props?.onPressLeft ? props?.onPressLeft() : router.openDrawer();
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.groupHeader}>

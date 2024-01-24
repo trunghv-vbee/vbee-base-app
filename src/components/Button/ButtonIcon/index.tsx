@@ -54,6 +54,7 @@ const ButtonIcon = memo(
       <TouchableOpacity
         {...props}
         activeOpacity={0.54}
+        hitSlop={{top: 14, left: 14, right: 14, bottom: 14}}
         style={[
           styles.container,
           {

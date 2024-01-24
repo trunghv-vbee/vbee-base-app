@@ -113,7 +113,7 @@ android {
         debug {
             signingConfig signingConfigs.debug
             matchingFallbacks = ['debug', 'release'] // Addded this
-            resValue "string", "CodePushDeploymentKey", '"AR90piB3-v6PFMlACIr3cL6SPS0GMGNzAjoD7"'
+            resValue "string", "CodePushDeploymentKey", '"TnKvX8_yc08jVAus_Sdhg4Sj4-b_ank_c9tFZ"'
         }
         development {
             // Caution! In production, you need to generate your own keystore file.
@@ -122,7 +122,7 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             matchingFallbacks = ['release'] // Addded this
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            resValue "string", "CodePushDeploymentKey", '"AR90piB3-v6PFMlACIr3cL6SPS0GMGNzAjoD7"'
+            resValue "string", "CodePushDeploymentKey", '"TnKvX8_yc08jVAus_Sdhg4Sj4-b_ank_c9tFZ"'
         }
         staging {
             // Caution! In production, you need to generate your own keystore file.
@@ -131,7 +131,7 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             matchingFallbacks = ['release'] // Addded this
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            resValue "string", "CodePushDeploymentKey", '"tglfHo9ohwSsaF_VQHhRtzoiC7HX-3d3zB9jk"'
+            resValue "string", "CodePushDeploymentKey", '"SlwXbtNzM2izXYTdPtN300KScIgFuVWI0xWI6"'
         }
         production {
             // Caution! In production, you need to generate your own keystore file.
@@ -140,7 +140,7 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             matchingFallbacks = ['release'] // Addded this
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            resValue "string", "CodePushDeploymentKey", '"PRHSnl9jkKRmy_vxfNfv5CS8t4q7iq7t5fndw"'
+            resValue "string", "CodePushDeploymentKey", '"tcL9dm5q3JjDasPUDIyyPxms-37eZOnh_7l_u"'
         }
     }
 }

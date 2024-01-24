@@ -17,7 +17,41 @@ import MonthList from 'components/DateTime/MonthList';
 import useStateCustom from 'hooks/useStateCustom';
 import YearList from 'components/DateTime/YearList';
 import strings from 'assets/strings';
-
+import {LocaleConfig} from 'react-native-calendars/src';
+import {textSectionTitleColor} from 'react-native-calendars/src/style';
+LocaleConfig.locales.vi = {
+  monthNames: [
+    'Tháng 1',
+    'Tháng 2',
+    'Tháng 3',
+    'Tháng 4',
+    'Tháng 5',
+    'Tháng 6',
+    'Tháng 7',
+    'Tháng 8',
+    'Tháng 9',
+    'Tháng 10',
+    'Tháng 11',
+    'Tháng 12',
+  ],
+  monthNamesShort: [
+    'Thg 1',
+    'Thg 2',
+    'Thg 3',
+    'Thg 4',
+    'Thg 5',
+    'Thg 6',
+    'Thg 7',
+    'Thg 8',
+    'Thg 9',
+    'Thg 10',
+    'Thg 11',
+    'Thg 12',
+  ],
+  dayNames: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+  dayNamesShort: ['CN', 'T.2', 'T.3', 'T.4', 'T.5', 'T.6', 'T.7'],
+};
+LocaleConfig.defaultLocale = 'vi';
 interface Props {
   title?: string;
   textButton?: string;
@@ -39,14 +73,18 @@ const DateTimePicker = (props: Props) => {
     type: 'date',
   });
 
+  const handleClose = () => {
+    setState({type: 'date'});
+    props.onCloseModal && props.onCloseModal();
+  };
   const onPressClose = useCallback(() => {
     if (props.onDateSelected) {
       props.onDateSelected(
         state.date,
         moment(state.date).format(props.format || 'DD/MM/YYYY'),
       );
+      handleClose();
     }
-    props.onCloseModal && props.onCloseModal();
   }, [state.date, props]);
 
   const _changeMonth = useCallback(
@@ -129,7 +167,7 @@ const DateTimePicker = (props: Props) => {
   const getDate = useMemo(() => {
     switch (state?.type) {
       case 'date':
-        return state.date.format('MMM YYYY');
+        return state.date.format('MMMM YYYY');
       case 'month':
         return state.date.format('YYYY');
       case 'year':
@@ -171,20 +209,22 @@ const DateTimePicker = (props: Props) => {
           <TouchableOpacity
             onPress={onShowMonth}
             style={[stylesCommon.flexRow]}>
-            <TextBase fontWeight={'600'}>{getDate}</TextBase>
-            <Image source={images.ic_back} style={styles.iconMonth} />
+            <TextBase ucfirst={true} marginRight={5} fontWeight={'600'}>
+              {getDate}
+            </TextBase>
+            <Image source={images.ic_arrow} style={styles.iconMonth} />
           </TouchableOpacity>
           <View style={[stylesCommon.flexRow, stylesCommon.pl20]}>
             <ButtonIcon
               hitSlop={{top: 10, left: 10, right: 10, bottom: 10}}
-              icon={images.ic_back}
+              icon={images.ic_arrow}
               onPress={_onChangeMonth(false)}
               tintColor={colors.primary}
             />
             <ButtonIcon
-              icon={images.ic_back}
+              icon={images.ic_arrow}
               tintColor={colors.primary}
-              iconStyle={{transform: [{rotate: '180deg'}]}}
+              iconStyle={{transform: [{rotate: '90deg'}]}}
               style={[stylesCommon.ml30]}
               onPress={_onChangeMonth(true)}
               hitSlop={{top: 10, left: 10, right: 10, bottom: 10}}
@@ -204,6 +244,9 @@ const DateTimePicker = (props: Props) => {
             hideArrows={true}
             firstDay={0}
             markingType={'custom'}
+            theme={{
+              textSectionTitleColor: colors.gray80,
+            }}
             markedDates={markedDate}
             renderHeader={_renderHeader}
           />
@@ -222,15 +265,13 @@ const DateTimePicker = (props: Props) => {
   ]);
 
   return (
-    <BottomModal
-      isVisibleModal={props.visible}
-      onCloseModal={props.onCloseModal}>
+    <BottomModal isVisibleModal={props.visible} onCloseModal={handleClose}>
       <View style={styles.container}>
         <View style={styles.containerHeader}>
           <View style={styles.containerButtonLeft}>
             <ButtonIcon
               icon={images.ic_close}
-              onPress={props.onCloseModal}
+              onPress={handleClose}
               backgroundColor={colors.transparent}
               style={styles.buttonLeft}
             />
@@ -267,11 +308,10 @@ const styles = StyleSheet.create({
   },
   iconMonth: {
     tintColor: colors.primary,
-    transform: [{rotate: '180deg'}],
+    transform: [{rotate: '90deg'}],
     height: 12,
     width: 12,
     resizeMode: 'contain',
-    marginLeft: 6,
   },
   containerHeader: {
     paddingVertical: 8,

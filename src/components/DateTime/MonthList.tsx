@@ -19,7 +19,7 @@ const MonthList = (props: Props) => {
   };
   return (
     <View style={styles.container}>
-      {moment.monthsShort().map((value, i) => {
+      {moment.months().map((value, i) => {
         const isSelected = parseInt(props.month) == i + 1;
         return (
           <TouchableOpacity
@@ -33,6 +33,7 @@ const MonthList = (props: Props) => {
                 isSelected ? styles.containerSelected : {},
               ]}>
               <TextBase
+                ucfirst={true}
                 fontWeight={isSelected ? '600' : '400'}
                 color={isSelected ? colors.primary : colors.text}>
                 {value}
@@ -59,8 +60,8 @@ const styles = StyleSheet.create({
     lineHeight: scale(27),
   },
   containerText: {
-    width: width / 6,
-    height: width / 6,
+    width: width / 4,
+    height: width / 4,
     padding: 4,
   },
   containerSelected: {
