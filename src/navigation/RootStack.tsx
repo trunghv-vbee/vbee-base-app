@@ -6,6 +6,8 @@ import Routes from 'navigation/service/Routes';
 import {createStackNavigator} from '@react-navigation/stack';
 import ImagePreviewScreen from 'screens/common/Image/ImagePreviewScreen';
 import {MainParamList} from 'navigation/service/NavigationParams';
+import WelcomeScreen from 'screens/welcome/WelcomeScreen';
+import TermsAndPoliciesScreen from 'screens/policies/TermsAndPoliciesScreen';
 
 const Stack = createStackNavigator<MainParamList>();
 
@@ -20,6 +22,11 @@ const RootStack = memo(() => {
       <Stack.Screen
         component={ImagePreviewScreen}
         name={Routes.ImagePreviewScreen}
+      />
+      <Stack.Screen component={WelcomeScreen} name={Routes.WelcomeScreen} />
+      <Stack.Screen
+        component={TermsAndPoliciesScreen}
+        name={Routes.TermsAndPoliciesScreen}
       />
     </Stack.Navigator>
   );

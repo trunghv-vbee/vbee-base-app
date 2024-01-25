@@ -9,7 +9,7 @@ import {reset} from 'navigation/service/RootNavigation';
 const SplashScreen = () => {
   useEffect(() => {
     setTimeout(() => {
-      reset(Routes.LoginScreen);
+      reset(Routes.WelcomeScreen);
     }, 2000);
   }, []);
   return (

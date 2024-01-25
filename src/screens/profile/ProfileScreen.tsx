@@ -95,6 +95,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
             itemTextStyle={{color: colors.text}}
             placeholderStyle={styles.selectedItem}
             renderRightIcon={renderIconRight}
+            onChange={() => {}}
             data={[
               {
                 value: '1',
@@ -117,6 +118,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
             itemTextStyle={{color: colors.text}}
             placeholderStyle={styles.selectedItem}
             renderRightIcon={renderIconRight}
+            onChange={() => {}}
             data={[
               {
                 value: '1',
