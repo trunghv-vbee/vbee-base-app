@@ -4,6 +4,7 @@ import CustomSideBar from 'components/Layout/SideBar/CustomSideBar';
 import Routes from 'navigation/service/Routes';
 import {DrawerContentComponentProps} from '@react-navigation/drawer/src/types';
 import menus from 'navigation/service/menus';
+import ProfileScreen from 'screens/profile/ProfileScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -32,6 +33,7 @@ const DrawerStack = () => {
           />
         );
       })}
+      <Drawer.Screen name={Routes.ProfileScreen} component={ProfileScreen} />
     </Drawer.Navigator>
   );
 };

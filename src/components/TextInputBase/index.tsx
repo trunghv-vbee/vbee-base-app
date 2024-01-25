@@ -15,28 +15,19 @@ import {
 import colors from 'assets/colors';
 import _ from 'lodash';
 import stylesCommon from 'assets/stylesCommon';
+import images from 'assets/images';
+import ButtonIcon from 'components/Button/ButtonIcon';
 
 interface Props extends TextInputProps {
-  value: string;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  onChangeText?: (text: string) => void | Dispatch<SetStateAction<string>>;
-  onSubmitEditing?: () => void;
-  onEndEditing?: () => void;
-  onSelectionChange?: () => void;
-  placeholder?: string;
-  isShowIcon?: boolean;
-  icon?: any;
-  secureTextEntry?: boolean;
-  style?: ViewStyle;
-  inputStyle?: StyleProp<TextStyle>;
+  isShowIconRight?: boolean;
+  iconRight?: any;
   containerStyle?: StyleProp<ViewStyle>;
-  iconStyle?: ViewStyle;
-  borderColor?: string;
-  iconPress?: () => void;
-  autoFocus?: boolean;
+  inputStyle?: StyleProp<TextStyle>;
+  iconRightStyle?: StyleProp<ViewStyle>;
+  iconRightPress?: () => void;
   backgroundColor?: ColorValue | string;
   iconLeft?: any;
+  iconLeftStyle?: StyleProp<ViewStyle>;
   isShowIconLeft?: boolean;
   iconPressLeft?: () => void;
   multiline?: boolean;
@@ -47,109 +38,55 @@ interface Props extends TextInputProps {
 }
 
 export default ({
-  value,
-  placeholder,
-  onChangeText,
-  onSubmitEditing,
-  onEndEditing,
-  onSelectionChange,
-  isShowIcon,
-  icon,
-  iconStyle,
-  secureTextEntry,
-  style,
-  borderColor = colors.border,
+  isShowIconRight,
+  iconRight,
+  iconRightStyle,
+  containerStyle,
   backgroundColor,
-  iconPress,
+  iconRightPress,
   isShowIconLeft,
   iconLeft,
   iconPressLeft,
-  autoFocus,
-  onFocus,
-  onBlur,
   errors,
   touched,
   name,
   inputStyle,
-  containerStyle,
+  iconLeftStyle,
   ...props
 }: Props) => {
-  let lineHeight;
-  if (props.multiline) {
-    lineHeight = 24;
-  }
   let errorName = _.get(errors, name || '');
   let touchedName = _.get(touched, name || '');
   return (
-    <View style={[styles.container2, containerStyle]}>
-      <View
-        style={[
-          styles.container,
-          {
-            borderColor,
-            backgroundColor,
-          },
-          style,
-          !!errorName && touchedName && styles.borderError,
-          props.multiline && styles.muli,
-        ]}>
-        {!!isShowIconLeft && !!iconLeft && (
-          <TouchableOpacity
-            style={styles.iconLeftView}
-            onPress={iconPressLeft}
-            disabled={!iconPressLeft}>
-            {iconLeft}
-          </TouchableOpacity>
-        )}
-        {props.editable ? (
-          <TextInput
-            numberOfLines={1}
-            placeholder={placeholder}
-            value={value}
-            onChangeText={onChangeText}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onSubmitEditing={onSubmitEditing}
-            onEndEditing={onEndEditing}
-            onSelectionChange={onSelectionChange}
-            style={[
-              styles.textInput,
-              {
-                lineHeight: lineHeight,
-                color: colors.text,
-              },
-              inputStyle,
-            ]}
-            placeholderTextColor={
-              props.placeholderTextColor || colors.borderColor
-            }
-            secureTextEntry={secureTextEntry}
-            editable={props.editable}
-            autoFocus={autoFocus}
-            {...props}
-          />
-        ) : (
-          <Text
-            size={15}
-            lineHeight={24}
-            text_placeholder={!value}
-            style={[stylesCommon.flex1, inputStyle]}>
-            {value || placeholder}
-          </Text>
-        )}
-        {isShowIcon && !!icon && (
-          <TouchableOpacity
-            style={[styles.iconView, iconStyle]}
-            onPress={iconPress}
-            disabled={!iconPress}>
-            {icon}
-          </TouchableOpacity>
-        )}
-      </View>
-      {!!errorName && touchedName && (
-        <Text size={12} marginTop={5} color={colors.red}>
-          {errorName}
-        </Text>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor,
+        },
+        containerStyle,
+        !!errorName && touchedName && styles.borderError,
+        props.multiline && styles.multi,
+      ]}>
+      {!!isShowIconLeft && !!iconLeft && (
+        <ButtonIcon
+          onPress={iconPressLeft}
+          icon={iconLeft}
+          style={iconLeftStyle}
+          backgroundColor={colors.transparent}
+        />
+      )}
+      <TextInput
+        style={[styles.textInput, inputStyle]}
+        placeholderTextColor={props.placeholderTextColor || colors.white32}
+        {...props}
+      />
+      {isShowIconRight && !!iconRight && (
+        <ButtonIcon
+          onPress={iconRightPress}
+          icon={iconRight}
+          style={iconRightStyle}
+          backgroundColor={colors.transparent}
+        />
       )}
     </View>
   );
@@ -158,13 +95,11 @@ export default ({
 const styles = StyleSheet.create({
   borderError: {
     borderColor: colors.red,
+    borderWidth: 1,
   },
   container2: {},
   container: {
-    justifyContent: 'center',
     paddingHorizontal: 16,
-    borderRadius: 108,
-    borderWidth: 1,
     ...stylesCommon.flexRow,
   },
   iconView: {
@@ -180,14 +115,12 @@ const styles = StyleSheet.create({
     ...stylesCommon.center,
     marginRight: 13,
   },
-  muli: {
+  multi: {
     paddingBottom: 11,
   },
   textInput: {
-    flex: 1,
     fontSize: 15,
-    height: '100%',
     minHeight: 48,
-    color: colors.text,
+    color: colors.white,
   },
 });

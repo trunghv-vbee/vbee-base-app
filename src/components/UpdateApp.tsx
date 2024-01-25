@@ -30,13 +30,6 @@ class UpdateApp extends Component<IProps, IState> {
   }
 
   componentDidMount() {
-    // CodePush.getUpdateMetadata(CodePush.UpdateState.LATEST).then((update) => {
-    //   console.log('update: ', update);
-    //   // If the current app "session" represents the first time
-    //   // this update has run, and it had a description provided
-    //   // with it upon release, let's show it to the end user
-    //   if (update?.isFirstRun && update?.description) {
-    // Display a "what's new?" modal
     codepushUtils
       .checkupDate()
       .then(update => {
@@ -48,17 +41,15 @@ class UpdateApp extends Component<IProps, IState> {
       .catch(err => {
         console.log('=>(UpdateApp.tsx:52) err', err);
       });
-    //   }
-    // });
   }
 
   codePushStatusDidChange(syncStatus: SyncStatus) {
     switch (syncStatus) {
       case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
-        this.setState({syncMessage: 'Checking for updates'});
+        this.setState({syncMessage: 'Đang kiểm tra cập nhật'});
         break;
       case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
-        this.setState({syncMessage: 'Downloading...'});
+        this.setState({syncMessage: 'Đang tải xuống...'});
         break;
       case CodePush.SyncStatus.AWAITING_USER_ACTION:
         this.setState({syncMessage: 'Awaiting user action.'});
@@ -89,7 +80,7 @@ class UpdateApp extends Component<IProps, IState> {
         break;
       case CodePush.SyncStatus.UNKNOWN_ERROR:
         this.setState({
-          syncMessage: 'An error occurred, please try again!',
+          syncMessage: 'Có lỗi xảy ra, vui lòng thử lại sau!',
           progress: undefined,
         });
         break;
@@ -179,19 +170,28 @@ class UpdateApp extends Component<IProps, IState> {
         backdropTransitionOutTiming={0}>
         <View style={styles.container}>
           <Text size={20} fontWeight={'700'}>
-            Notification
+            Thông báo
           </Text>
           <Text marginTop={10} size={18} center={true} fontWeight={'300'}>
-            The application has a new version
+            Ứng dụng đã có phiên bản mới, vui lòng cập nhật để có trải nghiệm
+            tốt nhất.
           </Text>
           {progressView}
-          <Text style={styles.messages}>{this.state.syncMessage || ''}</Text>
-          <Text>Current Version: {Constant.versionName}</Text>
+          {!!this.state.syncMessage && (
+            <Text color={colors.primary} style={styles.messages}>
+              {this.state.syncMessage || ''}
+            </Text>
+          )}
           <View style={styles.containerButtonUpdate}>
             <TouchableOpacity
               onPress={this.syncImmediate.bind(this)}
               style={styles.buttonUpdate}>
-              <Text style={styles.txLabelButton}>Update</Text>
+              <Text
+                fontWeight={'700'}
+                color={colors.primary}
+                style={styles.txLabelButton}>
+                Cập nhật
+              </Text>
             </TouchableOpacity>
           </View>
           {/* {this.props.children} */}
@@ -205,7 +205,6 @@ const styles = StyleSheet.create({
   containerProgress: {paddingTop: 10},
   txLabelButton: {
     fontSize: 16,
-    color: colors.text,
   },
   containerButtonUpdate: {
     flexDirection: 'row',
@@ -221,7 +220,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRightWidth: 1,
   },
   containerModal: {
     margin: 20,

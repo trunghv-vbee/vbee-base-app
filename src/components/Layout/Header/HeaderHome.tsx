@@ -12,6 +12,7 @@ export interface HeaderHomeProps {
   onPressLeft?: () => void;
   buttonRight?: React.ReactNode;
   hideButtonRight?: boolean;
+  renderTitle?: () => React.ReactNode;
 }
 const HeaderHome = (props: HeaderHomeProps) => {
   const router = useNavigation<DrawerNavigationProp<MainParamList>>();
@@ -30,18 +31,22 @@ const HeaderHome = (props: HeaderHomeProps) => {
           />
         </View>
         <View>
-          <Image
-            source={images.ic_logo}
-            style={{
-              height: 20,
-              resizeMode: 'contain',
-            }}
-          />
+          {props?.renderTitle ? (
+            props?.renderTitle()
+          ) : (
+            <Image
+              source={images.ic_logo}
+              style={{
+                height: 20,
+                resizeMode: 'contain',
+              }}
+            />
+          )}
         </View>
-        {props?.buttonRight ? (
-          props?.buttonRight
-        ) : props?.hideButtonRight ? null : (
-          <View style={[{flex: 1}]} />
+        {props?.hideButtonRight ? null : (
+          <View style={[{flex: 1, alignItems: 'flex-end'}]}>
+            {props?.buttonRight ? props?.buttonRight : null}
+          </View>
         )}
       </View>
     </SafeAreaView>
@@ -84,6 +89,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: scale(16),
+    paddingTop: 16,
   },
   container: {
     paddingTop: statusBarHeight + scale(15),

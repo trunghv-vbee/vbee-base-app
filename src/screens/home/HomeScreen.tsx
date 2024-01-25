@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Container from 'components/Layout/Container';
 import scale from 'utils/scale';
 import Image from 'components/Image';
@@ -8,8 +8,8 @@ import HeaderHome from 'components/Layout/Header/HeaderHome';
 
 const HomeScreen = () => {
   return (
-    <Container hideHeader={true} style={styles.container}>
-      <HeaderHome />
+    <Container showHeaderHome={true} style={styles.container}>
+      <View />
     </Container>
   );
 };

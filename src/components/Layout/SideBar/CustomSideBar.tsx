@@ -3,7 +3,13 @@ import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
 import * as React from 'react';
-import {Image, ImageBackground, StyleSheet, View} from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import colors from 'assets/colors';
 import images from 'assets/images';
 import strings from 'assets/strings';
@@ -19,6 +25,7 @@ import stylesCommon from 'assets/stylesCommon';
 import ButtonIcon from 'components/Button/ButtonIcon';
 import ButtonText from 'components/Button/ButtonText';
 import TextBase from 'components/TextBase';
+import ProfileScreen from 'screens/profile/ProfileScreen';
 
 const CustomSideBar = (props: DrawerContentComponentProps) => {
   const navigation =
@@ -28,6 +35,9 @@ const CustomSideBar = (props: DrawerContentComponentProps) => {
     dispatch(onLogout());
     props.navigation.closeDrawer();
     navigation.navigate(Routes.LoginScreen, {});
+  };
+  const goToProfile = () => {
+    navigation.navigate(Routes.ProfileScreen, {});
   };
 
   return (
@@ -55,7 +65,7 @@ const CustomSideBar = (props: DrawerContentComponentProps) => {
         </View>
       </DrawerContentScrollView>
       <View style={{padding: 20}}>
-        <View style={styles.groupProfile}>
+        <TouchableOpacity onPress={goToProfile} style={styles.groupProfile}>
           <View style={styles.containerName}>
             <TextBase
               ucfirst={true}
@@ -83,7 +93,7 @@ const CustomSideBar = (props: DrawerContentComponentProps) => {
               transform: [{rotate: '180deg'}],
             }}
           />
-        </View>
+        </TouchableOpacity>
         <ButtonText
           backgroundColor={colors.white16}
           titleColor={colors.white}

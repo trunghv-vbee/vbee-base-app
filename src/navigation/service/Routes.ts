@@ -12,6 +12,7 @@ enum Routes {
   IntroduceScreen = 'IntroduceScreen',
   GuideScreen = 'GuideScreen',
   TermsAndPoliciesScreen = 'TermsAndPoliciesScreen',
+  ProfileScreen = 'ProfileScreen',
 
   //Image
   ImagePreviewScreen = 'ImagePreviewScreen',

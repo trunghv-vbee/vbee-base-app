@@ -11,11 +11,11 @@ import {
   ViewStyle,
 } from 'react-native';
 import colors from 'assets/colors';
-import {height, width} from 'assets/sizes';
 import images from 'assets/images';
 import Footer from 'components/Layout/Footer';
+import HeaderHome, {HeaderHomeProps} from 'components/Layout/Header/HeaderHome';
 
-interface Props extends HeaderBaseProps {
+interface Props extends HeaderBaseProps, HeaderHomeProps {
   children: React.ReactNode;
   hideHeader?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -23,6 +23,7 @@ interface Props extends HeaderBaseProps {
   dark?: boolean;
   isHideFooter?: boolean;
   title?: string;
+  showHeaderHome?: boolean;
   [key: string]: any;
 }
 const Container = ({
@@ -33,6 +34,7 @@ const Container = ({
   dark,
   title,
   isHideFooter,
+  showHeaderHome,
   ...props
 }: Props) => {
   const ContainerComponent = translucent ? View : SafeAreaView;
@@ -43,7 +45,11 @@ const Container = ({
         translucent={true}
         barStyle={dark ? 'dark-content' : 'light-content'}
       />
-      {hideHeader ? null : <HeaderBase title={title} {...props} />}
+      {hideHeader ? null : showHeaderHome ? (
+        <HeaderHome {...props} />
+      ) : (
+        <HeaderBase title={title} {...props} />
+      )}
       <ContainerComponent
         style={[styles.flex, translucent ? {} : styles.styleTranslucent]}>
         <View style={[styles.flex, style]}>{children}</View>

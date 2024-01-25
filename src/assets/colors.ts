@@ -14,6 +14,7 @@ const colors = {
   warning: '#FB8C00',
   green: '#52A545',
   white: '#FFFFFF',
+  white08: 'rgba(255, 255, 255, 0.08)',
   white16: 'rgba(255, 255, 255, 0.16)',
   white32: 'rgba(255, 255, 255, 0.32)',
   white64: 'rgba(255, 255, 255, 0.64)',

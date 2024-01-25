@@ -124,7 +124,7 @@ const IntroduceScreen = () => {
 export default IntroduceScreen;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {paddingTop: 10},
   containerHeader: {
     paddingHorizontal: 20,
     borderBottomWidth: 1,

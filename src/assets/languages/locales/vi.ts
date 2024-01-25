@@ -8,4 +8,7 @@ export default {
   guide: 'Hướng dẫn',
   userManual: 'Hướng dẫn sử dụng',
   tempsAndPolicies: 'Điều khoản & Chính sách',
+  myProfile: 'Hồ sơ của tôi',
+  gender: 'Giới tính',
+  name: 'Danh xưng',
 };

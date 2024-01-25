@@ -6422,6 +6422,13 @@ react-native-device-info@^10.12.0:
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-10.12.0.tgz#be4e71cbcc9a05e8643b1a419a4450d4cef9bbcc"
   integrity sha512-gnBkjyZNEqRd+5BNrdzuvmlraHTCH/to2x0Gp9rtDt0O9xWWW1MTYohUVWX9A0Ad2HVYcGanDCIvjWp4ngMZFg==
 
+react-native-element-dropdown@^2.10.1:
+  version "2.10.1"
+  resolved "https://registry.yarnpkg.com/react-native-element-dropdown/-/react-native-element-dropdown-2.10.1.tgz#3b6fa81c60b703fa65a077a606a78cc328c50cf8"
+  integrity sha512-7J3K6T1LZo5H2rsEdAPpYDwhgog4UvatFq8bsW3dCrd2oyXiftn83gcQP1NKRYl4QMyb4WCMXIf+FqmZzS4o/Q==
+  dependencies:
+    lodash "^4.17.21"
+
 react-native-flash-message@^0.4.2:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/react-native-flash-message/-/react-native-flash-message-0.4.2.tgz#ed8ffe60c532bc1274c3b49a60dd0bd2fca59c50"
