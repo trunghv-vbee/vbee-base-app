@@ -34,7 +34,7 @@ const CustomSideBar = (props: DrawerContentComponentProps) => {
   const logout = () => {
     dispatch(onLogout());
     props.navigation.closeDrawer();
-    navigation.navigate(Routes.LoginScreen, {});
+    navigation.navigate(Routes.WelcomeScreen, {});
   };
   const goToProfile = () => {
     navigation.navigate(Routes.ProfileScreen, {});

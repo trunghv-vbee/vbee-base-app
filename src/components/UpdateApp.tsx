@@ -17,6 +17,7 @@ interface IProps {}
 interface IState {
   isVisibleModal?: boolean;
   restartAllowed?: boolean;
+  isUpdating?: boolean;
   syncMessage?: string;
   progress?: IProgress;
 }
@@ -26,6 +27,7 @@ class UpdateApp extends Component<IProps, IState> {
     this.state = {
       restartAllowed: true,
       isVisibleModal: false,
+      isUpdating: false,
     };
   }
 
@@ -46,22 +48,26 @@ class UpdateApp extends Component<IProps, IState> {
   codePushStatusDidChange(syncStatus: SyncStatus) {
     switch (syncStatus) {
       case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
-        this.setState({syncMessage: 'Đang kiểm tra cập nhật'});
+        this.setState({
+          syncMessage: 'Đang kiểm tra cập nhật',
+          isUpdating: true,
+        });
         break;
       case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
-        this.setState({syncMessage: 'Đang tải xuống...'});
+        this.setState({syncMessage: 'Đang tải xuống...', isUpdating: true});
         break;
       case CodePush.SyncStatus.AWAITING_USER_ACTION:
-        this.setState({syncMessage: 'Awaiting user action.'});
+        this.setState({syncMessage: 'Awaiting user action.', isUpdating: true});
         break;
       case CodePush.SyncStatus.INSTALLING_UPDATE:
-        this.setState({syncMessage: 'Installing update.'});
+        this.setState({syncMessage: 'Đang cài đặt...', isUpdating: true});
         break;
       case CodePush.SyncStatus.UP_TO_DATE:
         this.setState({
           syncMessage: 'App up to date.',
           progress: undefined,
           isVisibleModal: false,
+          isUpdating: false,
         });
         break;
       case CodePush.SyncStatus.UPDATE_IGNORED:
@@ -69,6 +75,7 @@ class UpdateApp extends Component<IProps, IState> {
           syncMessage: 'Update cancelled by user.',
           progress: undefined,
           isVisibleModal: false,
+          isUpdating: false,
         });
         break;
       case CodePush.SyncStatus.UPDATE_INSTALLED:
@@ -76,12 +83,19 @@ class UpdateApp extends Component<IProps, IState> {
           syncMessage: 'Update installed and will be applied on restart.',
           progress: undefined,
           isVisibleModal: false,
+          isUpdating: false,
         });
         break;
       case CodePush.SyncStatus.UNKNOWN_ERROR:
         this.setState({
           syncMessage: 'Có lỗi xảy ra, vui lòng thử lại sau!',
           progress: undefined,
+          isUpdating: false,
+        });
+        break;
+      default:
+        this.setState({
+          isUpdating: false,
         });
         break;
     }
@@ -185,10 +199,11 @@ class UpdateApp extends Component<IProps, IState> {
           <View style={styles.containerButtonUpdate}>
             <TouchableOpacity
               onPress={this.syncImmediate.bind(this)}
+              disabled={this.state.isUpdating}
               style={styles.buttonUpdate}>
               <Text
-                fontWeight={'700'}
-                color={colors.primary}
+                fontWeight={this.state.isUpdating ? '500' : '700'}
+                color={this.state.isUpdating ? colors.gray43 : colors.primary}
                 style={styles.txLabelButton}>
                 Cập nhật
               </Text>

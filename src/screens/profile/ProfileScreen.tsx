@@ -33,7 +33,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
   const dispatch = useAppDispatch();
   const logout = () => {
     dispatch(onLogout());
-    navigation.navigate(Routes.LoginScreen, {});
+    navigation.navigate(Routes.WelcomeScreen, {});
   };
   const renderIconRight = () => {
     return (
