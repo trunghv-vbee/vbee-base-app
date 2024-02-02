@@ -51,6 +51,9 @@ yarn-error.log
 **/fastlane/Preview.html
 **/fastlane/screenshots
 **/fastlane/test_output
+android/fastlane/apk
+android/fastlane/aab
+ios/fastlane/ipa
 
 # Bundle artifact
 *.jsbundle

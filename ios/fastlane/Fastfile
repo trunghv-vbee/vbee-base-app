@@ -1,0 +1,106 @@
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+
+  desc 'Fetch certificates and provisioning profiles'
+  lane :certificates do
+    import_certificate(
+      keychain_name: "login",
+      certificate_path: ENV["CERTIFICATE_PATH"],
+      certificate_password: ENV["P12_PASSWORD"],
+    )
+    install_provisioning_profile(path: ENV["PROVISION_PROFILE_PATH"])
+
+    update_project_provisioning(
+      xcodeproj: "vbee.xcodeproj",
+      profile: ENV["PROVISION_PROFILE_PATH"],
+      build_configuration: ENV["ENV"]
+    )
+  end
+
+  desc 'Fetch certificates, build and upload to App Center.'
+  lane :uploadToAppcenter do
+    appcenter_upload(
+      api_token: ENV["APPCENTER_API_TOKEN"],
+      owner_name: ENV["APPCENTER_OWNER_NAME"],
+      app_name: ENV["APPCENTER_APP_NAME"],
+      destinations: "#{ENV["ENV"]}",
+      file: "./fastlane/ipa/#{ENV['ENV']}/#{ENV['ENV']}.ipa"
+    )
+  end
+
+  desc "Upload to TestFlight"
+  lane :uploadToTestFlight do
+    upload_to_testflight(
+      app_identifier: ENV["PACKAGE_NAME"],
+      team_id: ENV["TEAM_ID"],
+      api_key_path: ENV["API_KEY_PATH"],
+      ipa: "./fastlane/ipa/#{ENV['ENV']}/#{ENV['ENV']}.ipa"
+    )
+  end
+
+  desc "Build Application"
+  lane :build do
+    environment = "#{ENV['ENV']}"
+
+    if environment == 'development'
+      buildNumber = appcenter_fetch_version_number(
+        api_token: ENV["APPCENTER_API_TOKEN"],
+        owner_name: ENV["APPCENTER_OWNER_NAME"],
+        app_name: ENV["APPCENTER_APP_NAME"],
+        )
+      versionName = '0.0.1'
+      versionCode = buildNumber['build_number'].to_i + 1
+    elsif environment == 'staging'
+      buildNumber = appcenter_fetch_version_number(
+        api_token: ENV["APPCENTER_API_TOKEN"],
+        owner_name: ENV["APPCENTER_OWNER_NAME"],
+        app_name: ENV["APPCENTER_APP_NAME"],
+        )
+      versionName = ENV['VERSION']
+      versionCode = buildNumber['build_number'].to_i + 1
+    elsif environment == 'production'
+      buildNumber = latest_testflight_build_number(
+        app_identifier: ENV["PACKAGE_NAME"],
+        initial_build_number: 0,
+        team_id: ENV["TEAM_ID"],
+        api_key_path: ENV["API_KEY_PATH"],
+        version: ENV['VERSION']
+      )
+      puts "BuildNumber: =>>: #{buildNumber}"
+      versionName = ENV['VERSION']
+      versionCode = buildNumber + 1
+    end
+    puts "Version code:#{versionCode}"
+    puts "Version name:#{versionName}"
+
+    increment_build_number(
+      build_number: versionCode
+    )
+    increment_version_number(
+      version_number: versionName
+    )
+
+    certificates
+
+    gym(
+      clean: true,
+      scheme: "#{environment}",
+      configuration: "#{environment}",
+      workspace: "vbee.xcworkspace",
+      output_directory: "./fastlane/ipa/#{environment}",
+      output_name: "#{environment}.ipa",
+      export_method: ENV["ENV"] == "production" ? 'app-store' : 'development',
+    )
+
+    #     uploadToAppcenter
+    if environment == "development" || environment == 'staging'
+      uploadToAppcenter
+    elsif ENV["ENV"] == "production"
+      uploadToTestFlight
+    end
+  end
+
+end

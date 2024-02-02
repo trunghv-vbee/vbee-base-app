@@ -4,10 +4,10 @@ apply plugin: "com.facebook.react"
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 project.ext.envConfigFiles = [
-        production: ".env.production",
-        debug: ".env.development",
+        production : ".env.production",
+        debug      : ".env.development",
         development: ".env.development",
-        staging: ".env.staging",
+        staging    : ".env.staging",
 ]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 /**
@@ -87,8 +87,8 @@ android {
         applicationId "vn.vbee.base"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode project.hasProperty('versionCode') ? Integer.parseInt(project.versionCode) : 1
+        versionName project.hasProperty('versionName') ? project.versionName : "1.0"
         multiDexEnabled true
         resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
         resValue "string", "build_config_package", "vn.vbee.base"
@@ -141,6 +141,11 @@ android {
             matchingFallbacks = ['release'] // Addded this
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             resValue "string", "CodePushDeploymentKey", '"tcL9dm5q3JjDasPUDIyyPxms-37eZOnh_7l_u"'
+        }
+    }
+    bundle {
+        language {
+            enableSplit = false
         }
     }
 }
